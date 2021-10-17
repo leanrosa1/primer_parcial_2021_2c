@@ -185,7 +185,7 @@ int playroom_getId (int* pId)
 	int status = -1;
 	int auxId;
 
-	if (input_getInt(1, 9999, 2, "\n->Ingrese el id del salón a eliminar", &auxId, "Error") == 1)
+	if (input_getInt(1, 9999, 2, "\n->Ingrese el id del salon", &auxId, "Error") == 1)
 	{
 		*pId = auxId;
 		status = 1;

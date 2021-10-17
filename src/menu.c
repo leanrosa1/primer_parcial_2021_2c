@@ -12,11 +12,22 @@
 #include "Playroom.h"
 #include "Arcade.h"
 #include "Game.h"
+#include "report.h"
+
+#define GAME_NAME_LEN 63
 
 //private prototypes
 static void printfModifyArcadeMenu (void);
+static void printReportsMenu (void);
+static int menu_subOption1 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+static void menu_subOption2 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades);
+static void menu_subOption3 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfPlayrooms);
+static void menu_subOption4 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+static void menu_subOption5 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+static void menu_subOption6 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+static void menu_subOption7 (Arcade arcadesList[], int arcadesListLen, int numberOfArcades);
 
-void menu_printMainMenu (void) //CUIDADO OPCIONES
+void menu_printMainMenu (void)
 {
 	printf("\n");
 	printf("\n--------MENU--------");
@@ -37,6 +48,7 @@ int menu_selectAnOption (int* selectedOption, int minValue, int maxValue)
 {
 	int status = -1;
 	int auxiliarSelectedOption;
+
 	if (input_getInt(minValue, maxValue, 2, "Seleccione una opción", &auxiliarSelectedOption, "Error") == 1)
 	{
 		status = 1;
@@ -80,6 +92,8 @@ int menu_optionTwo (Playroom playroomList[], int playroomListLen, Arcade arcadeL
 					arcade_deleteByRoomId(arcadeList, arcadeListLen, id);
 					status = 1;
 				}
+				else
+					printf("\nEl salón con id indicado no fue encontrado");
 			}
 		}
 		else
@@ -242,6 +256,197 @@ void menu_optionEight (Arcade arcadeList[], int arcadeListLen, int arcadesQuanti
 		else
 			printf("\nNo hay juegos por listar porque no hay arcades cargados en el sistema");
 	}
+}
+
+int menu_optionNine (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	int selectedOption;
+
+	printReportsMenu();
+	if (menu_selectAnOption(&selectedOption, 1, 7) == 1)
+	{
+		switch (selectedOption)
+		{
+			case 1:
+				menu_subOption1(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades, numberOfPlayrooms);
+				break;
+			case 2:
+				menu_subOption2(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades);
+				break;
+			case 3:
+				menu_subOption3(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfPlayrooms);
+				break;
+			case 4:
+				menu_subOption4(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades, numberOfPlayrooms);
+				break;
+			case 5:
+				menu_subOption5(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades, numberOfPlayrooms);
+				break;
+			case 6:
+				menu_subOption6(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades, numberOfPlayrooms);
+				break;
+			case 7:
+				menu_subOption7(arcadesList, arcadesListLen, numberOfArcades);
+				break;
+		}
+	}
+	return 0;
+}
+
+static int menu_subOption1 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	if (numberOfPlayrooms > 0 && numberOfArcades > 3)
+	{
+		if (report_playroomsOverFourArcades(playroomsList, playroomsListLen, arcadesList, arcadesListLen) != 1)
+		{
+			printf("\nNo se pudo procesar el informe");
+		}
+	}
+	else
+	{
+		printf("\nNo hay suficientes salones o arcades para realizar el informe");
+	}
+	return 1;
+}
+
+static void menu_subOption2 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades)
+{
+	if (numberOfArcades > 0)
+	{
+		if (report_arcadesOverTwoPlayers(playroomsList, playroomsListLen, arcadesList, arcadesListLen) != 1)
+		{
+			printf("\nNo se pudo procesar el informe");
+		}
+	}
+	else
+		printf("\nDebe existir al menos un arcade para realizar el informe");
+}
+
+static void menu_subOption3 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfPlayrooms)
+{
+	int id;
+
+	if (numberOfPlayrooms > 0)
+	{
+		if (playroom_getId(&id) == 1)
+		{
+			if (validateIfPlayroomIdExists(playroomsList, playroomsListLen, id) == 1)
+			{
+				if (report_playroomById(playroomsList, playroomsListLen, arcadesList, arcadesListLen, id) != 1)
+				{
+					printf("\nNo se pudo procesar el informe");
+				}
+			}
+			else
+				printf("\nEl salón con ID %d no existe", id);
+		}
+		else
+			printf("\nError al ingresar el id");
+	}
+	else
+		printf("\nDebe existir al menos un salon para realizar el informe");
+}
+
+static void menu_subOption4 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	int id;
+
+	if (numberOfPlayrooms > 0 && numberOfArcades > 0)
+	{
+		if (playroom_getId(&id) == 1)
+		{
+			if (validateIfPlayroomIdExists(playroomsList, playroomsListLen, id) == 1)
+			{
+				if (report_arcadesByPlayroomId(playroomsList, playroomsListLen, arcadesList, arcadesListLen, id) != 1)
+				{
+					printf("\nNo se pudo procesar el informe");
+				}
+			}
+			else
+				printf("\nEl salón con ID %d no existe", id);
+		}
+		else
+			printf("\nError al ingresar el id");
+	}
+	else
+		printf("\nNo hay suficientes salones o arcades para realizar el informe");
+}
+
+static void menu_subOption5 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	if (numberOfPlayrooms > 0 && numberOfArcades > 0)
+	{
+		if (report_maxNumberOfArcadesPlayroom(playroomsList, playroomsListLen, arcadesList, arcadesListLen) != 1)
+		{
+			printf("\nNo se pudo procesar el informe");
+		}
+	}
+	else
+		printf("\nNo hay suficientes salones o arcades para realizar el informe");
+}
+
+static void menu_subOption6 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	int id;
+	float coinPrice;
+
+	if (numberOfPlayrooms > 0 && numberOfArcades > 0)
+	{
+		if (playroom_getId(&id) == 1)
+		{
+			if (validateIfPlayroomIdExists(playroomsList, playroomsListLen, id) == 1)
+			{
+				if (input_getFloat(1, 100, 2, "\n->Ingrese el precio de las fichas", &coinPrice, "Error") == 1)
+				{
+					if (report_maxAmountOfPlayroom(arcadesList, arcadesListLen, id, coinPrice) != 1)
+					{
+						printf("\nNo se pudo procesar el informe");
+					}
+				}
+				else
+					printf("\nError al ingresar el precio de las fichas");
+			}
+			else
+				printf("\nEl salón con ID %d no existe", id);
+		}
+		else
+			printf("\nError al ingresar el id");
+	}
+	else
+		printf("\nNo hay suficientes salones o arcades para realizar el informe");
+}
+
+static void menu_subOption7 (Arcade arcadesList[], int arcadesListLen, int numberOfArcades)
+{
+	char gameName[GAME_NAME_LEN];
+
+	if (numberOfArcades > 0)
+	{
+		if (input_getText(gameName, GAME_NAME_LEN, 2, "\n->Ingrese el nombre del juego", "Error") == 1)
+		{
+			if (report_howManyArcadesHasThisGame(arcadesList, arcadesListLen, gameName) != 1)
+			{
+				printf("\nNo se pudo procesar el informe");
+			}
+		}
+		else
+			printf("\nError al ingresar el nombre");
+	}
+	else
+		printf("\nDebe existir al menos un arcade registrado para realizar el informe");
+}
+
+static void printReportsMenu (void)
+{
+	printf("\n---------------------INFORMAR---------------------");
+	printf("\n1. Salones con más de 4 arcades");
+	printf("\n2. Arcades para más de dos jugadores");
+	printf("\n3. Informacion de un salon");
+	printf("\n4. Arcades de un salon");
+	printf("\n5. Salon con mayor cantidad de arcades");
+	printf("\n6. Mayor recaudación posible de un salon");
+	printf("\n7. Arcades que contienen un juego determinado");
+	printf("\n--------------------------------------------------");
 }
 
 static void printfModifyArcadeMenu (void)

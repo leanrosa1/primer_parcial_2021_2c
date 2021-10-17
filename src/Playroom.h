@@ -13,6 +13,7 @@ struct Playroom
 	char name[64];
 	char address[64];
 	int type;
+	int numberOfArcades;
 	int isEmpty;
 };
 typedef struct Playroom Playroom;

@@ -158,7 +158,6 @@ int input_getFloatWithoutRange (char message[], char errorMessage[], int retries
 
 int input_getText (char pString[], int len, int retries, char message[], char errorMessage[]) {
 	int status;
-	//int isOnlyText;
 	int counter;
 
 	for (counter = 0; counter <= retries; counter++)

@@ -17,4 +17,12 @@ void menu_optionFive (Arcade arcadeList[], int arcadeListLen, int arcadesQuantit
 int menu_optionSix (Arcade arcadeList[], int arcadeListLen, Playroom playroomList[], int playroomListLen, int arcadesQuantity);
 void menu_optionSeven (Arcade arcadeList[], int arcadeListLen, int arcadesQuantity);
 void menu_optionEight (Arcade arcadeList[], int arcadeListLen, int arcadesQuantity);
+int  menu_optionNine (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+int menu_optionA (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+void menu_optionB (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades);
+void menu_optionC (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfPlayrooms);
+void menu_optionD (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+void menu_optionE (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+void menu_optionF (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+void menu_optionG (Arcade arcadesList[], int arcadesListLen, int numberOfArcades);
 #endif /* MENU_H_ */

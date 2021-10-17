@@ -24,8 +24,8 @@ int main(void) {
 	Playroom playroomsList[PLAYROOMS_LEN];
 	Arcade arcadesList[ARCADES_LEN];
 	int selectedOption;
-	int playroomsQuantity = 0;
-	int arcadesQuantity = 0;
+	int numberOfPlayrooms = 0;
+	int numberOfArcades = 0;
 
 	playroom_init(playroomsList, PLAYROOMS_LEN);
 	arcade_init(arcadesList, ARCADES_LEN);
@@ -39,40 +39,40 @@ int main(void) {
 			{
 				case 1:
 					if (menu_optionOne(playroomsList, PLAYROOMS_LEN) == 1)
-						playroomsQuantity++;
+						numberOfPlayrooms++;
 					break;
 				case 2:
-					if (menu_optionTwo(playroomsList, PLAYROOMS_LEN, arcadesList, ARCADES_LEN, playroomsQuantity) == 1)
+					if (menu_optionTwo(playroomsList, PLAYROOMS_LEN, arcadesList, ARCADES_LEN, numberOfPlayrooms) == 1)
 					{
-						playroomsQuantity--;
+						numberOfPlayrooms--;
 						printf("\nSalón eliminado correctamente");
 					}
 					break;
 				case 3:
-					menu_optionThree(playroomsList, PLAYROOMS_LEN, playroomsQuantity);
+					menu_optionThree(playroomsList, PLAYROOMS_LEN, numberOfPlayrooms);
 					break;
 				case 4:
-					if (menu_optionFour(arcadesList, ARCADES_LEN, playroomsList, PLAYROOMS_LEN, playroomsQuantity) == 1)
-						arcadesQuantity++;
+					if (menu_optionFour(arcadesList, ARCADES_LEN, playroomsList, PLAYROOMS_LEN, numberOfPlayrooms) == 1)
+						numberOfArcades++;
 					break;
 				case 5:
-					menu_optionFive(arcadesList, ARCADES_LEN, arcadesQuantity);
+					menu_optionFive(arcadesList, ARCADES_LEN, numberOfArcades);
 					break;
 				case 6:
-					if (menu_optionSix(arcadesList, ARCADES_LEN, playroomsList, PLAYROOMS_LEN, arcadesQuantity) == 1)
+					if (menu_optionSix(arcadesList, ARCADES_LEN, playroomsList, PLAYROOMS_LEN, numberOfArcades) == 1)
 					{
 						printf("\nArcade eliminado exitosamente");
-						arcadesQuantity--;
+						numberOfArcades--;
 					}
 					break;
 				case 7:
-					menu_optionSeven(arcadesList, ARCADES_LEN, arcadesQuantity);
+					menu_optionSeven(arcadesList, ARCADES_LEN, numberOfArcades);
 					break;
 				case 8:
-					menu_optionEight(arcadesList, ARCADES_LEN, arcadesQuantity);
+					menu_optionEight(arcadesList, ARCADES_LEN, numberOfArcades);
 					break;
 				case 9:
-					//mostar submenu de informes
+					menu_optionNine(playroomsList, PLAYROOMS_LEN, arcadesList, ARCADES_LEN, numberOfArcades, numberOfPlayrooms);
 					break;
 				case 10:
 					printf("\nFinalizando programa...");

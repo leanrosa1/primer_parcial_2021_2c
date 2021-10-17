@@ -17,7 +17,6 @@
 
 //private prototypes
 static int createId (void);
-static int validateIfPlayroomIdExists (Playroom list[], int len, int id);
 static int getPlayroomId (int* pPlayroomId, Playroom list[], int len);
 static int getArcadeSoundType (int* pSoundType);
 static int getArcadeNumberOfPlayers (int* pPlayers);
@@ -378,7 +377,7 @@ static int getPlayroomId (int* pPlayroomId, Playroom list[], int len)
 	return status;
 }
 
-static int validateIfPlayroomIdExists (Playroom list[], int len, int id)
+int validateIfPlayroomIdExists (Playroom list[], int len, int id)
 {
 	int exists = -1;
 	int index;
