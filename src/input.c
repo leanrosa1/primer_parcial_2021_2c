@@ -12,15 +12,15 @@
 int myGetS (char pCadena[], int lenCadena);
 
 /**
- * \brief: Pide al usuario que ingrese un número de tipo float y lo valida.
- * 			Retorna 1 si fue exitoso y 0 si no lo fue
- * \param valorMinimo: float que representa el valor mínimo que puede ingresar el usuario
- * \param valorMaximo: float que representa el valor máximo que puede ingresar el usuario
- * \param intentos: int que representa la cantidad de reintentos permitidos
- * \param mensaje: string que se imprime por consola al usuario a modo informativo
- * \param *pNumero: puntero de la dirección en memoria donde se guardará el resultado
- * \param mensajeError: string que se imprime por consola al usuario cuando se cometieron todos los intentos permitidos
- * \return 1 si fue exitoso y 0 si no lo fue
+ * \brief: Ask user a float within an specific range
+ *
+ * \param minValue: minimum allowed value
+ * \param maxValue: maximum allowed value
+ * \param retries: indicates how many retries the user has if makes an error
+ * \param message: informative message to ask the number
+ * \param *pNumber: float pointer to write user's input
+ * \param errorMessage: error message if user makes more errors than allowed retries
+ * \return 1 if OK // -1 if Error
  */
 int input_getFloat (float minValue, float maxValue, int retries, char message[], float* pNumber, char errorMessage[])
 {
@@ -69,15 +69,15 @@ int input_getFloat (float minValue, float maxValue, int retries, char message[],
 }
 
 /**
- * \brief: Pide al usuario que ingrese un número de tipo int y lo valida.
- * 			Retorna 1 si fue exitoso y 0 si no lo fue
- * \param valorMinimo: int que representa el valor mínimo que puede ingresar el usuario
- * \param valorMaximo: int que representa el valor máximo que puede ingresar el usuario
- * \param intentos: int que representa la cantidad de reintentos permitidos
- * \param mensaje: string que se imprime por consola al usuario a modo informativo
- * \param *pNumero: puntero de la dirección en memoria donde se guardará el resultado
- * \param mensajeError: string que se imprime por consola al usuario cuando se cometieron todos los intentos permitidos
- * \return 1 si fue exitoso y 0 si no lo fue
+ * \brief: Ask user an integer within an specific range
+ *
+ * \param minValue: minimum allowed value
+ * \param maxValue: maximum allowed value
+ * \param retries: indicates how many retries the user has if makes an error
+ * \param message: informative message to ask the number
+ * \param *pNumber: int pointer to write user's input
+ * \param errorMessage: error message if user makes more errors than allowed retries
+ * \return 1 if OK // -1 if Error
  */
 int input_getInt (int minValue, int maxValue, int retries, char message[], int* pNumber, char messageError[]) {
 	int counter;
@@ -125,14 +125,13 @@ int input_getInt (int minValue, int maxValue, int retries, char message[], int* 
 }
 
 /**
- * \brief: Pide al usuario que ingrese un número de tipo float y lo valida.
- * 			Retorna 1 si fue exitoso y 0 si no lo fue
-
- * \param mensaje: string que se imprime por consola al usuario a modo informativo
- * \param mensajeError: string que se imprime por consola al usuario cuando se cometieron todos los intentos permitidos
- * \param reintentos: int que representa la cantidad de reintentos permitidos
- * \param *pNumero: puntero de la dirección en memoria donde se guardará el resultado
- * \return 1 si fue exitoso y 0 si no lo fue
+ * \brief: Ask user a float
+ *
+ * \param retries: indicates how many retries the user has if makes an error
+ * \param message: informative message to ask the number
+ * \param *pNumber: float pointer to write user's input
+ * \param errorMessage: error message if user makes more errors than allowed retries
+ * \return 1 if OK // -1 if Error
  */
 int input_getFloatWithoutRange (char message[], char errorMessage[], int retries, float* pNumber) {
 	int remainingAttempts;
@@ -156,6 +155,16 @@ int input_getFloatWithoutRange (char message[], char errorMessage[], int retries
 	return status;
 }
 
+/**
+ * \brief: Ask user a character string
+ *
+ * \param pString: char pointer to write user's input
+ * \param len: char pointer's len
+ * \param retries: indicates how many retries the user has if makes an error
+ * \param message: informative message to ask the text
+ * \param errorMessage: error message if user makes more errors than allowed retries
+ * \return 1 if OK // -1 if Error
+ */
 int input_getText (char pString[], int len, int retries, char message[], char errorMessage[]) {
 	int status;
 	int counter;

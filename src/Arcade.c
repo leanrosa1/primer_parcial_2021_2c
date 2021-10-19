@@ -25,6 +25,13 @@ static int getArcadeGame (char arcadeGame[]);
 static int getArcadeCountry (char arcadeCountry[]);
 static void printItems (void);
 
+/**
+ * \brief: Put every arcade's isEmpty flag in 1
+
+ * \param list: an Arcade array
+ * \param len: length of the array
+ * \return 1 if OK // -1 if Error
+ */
 int arcade_init(Arcade list[], int len)
 {
 	int status = -1;
@@ -32,7 +39,7 @@ int arcade_init(Arcade list[], int len)
 
 	if (list != NULL && len > 0)
 	{
-		status = 0;
+		status = 1;
 		for (index = 0; index < len; index++)
 		{
 			list[index].isEmpty = 1;
@@ -41,6 +48,15 @@ int arcade_init(Arcade list[], int len)
 	return status;
 }
 
+/**
+ * \brief: Ask user to fill all arcade struct fields.
+ * This function put flag is empty in -1 and write an id for the new arcade
+
+ * \param pArcade: an Arcade variable pointer
+ * \param list: an array of Playroom structs
+ * \param len: length of Playroom array
+ * \return 1 if OK // -1 if Error
+ */
 int arcade_add(Arcade* pArcade, Playroom list[], int len)
 {
 	int status = -1;
@@ -101,6 +117,14 @@ int arcade_add(Arcade* pArcade, Playroom list[], int len)
 	return status;
 }
 
+/**
+ * \brief: Search and return by reference first empty position (if exists) in Arcade structs array
+ *
+ * \param list: an array of Arcade structs
+ * \param listLen: length of Arcade array
+ * \param pEmptyPosition: int pointer to write the empty position
+ * \return 1 if OK // -1 if Error or not empty position found
+ */
 int arcade_findAnEmptyPosition(Arcade list[], int listLen, int* pEmptyPosition)
 {
 	int index;
@@ -120,14 +144,21 @@ int arcade_findAnEmptyPosition(Arcade list[], int listLen, int* pEmptyPosition)
 	return status;
 }
 
+/**
+ * \brief: Search and return by reference the position (if exists) of an specific arcade in Arcade structs array
+ *
+ * \param list: an array of Arcade structs
+ * \param listLen: length of Arcade array
+ * \param id: ID of the arcade
+ * \param pFoundPosition: int pointer to write the position (if exists) of the arcade in Arcade structs array
+ * \return 1 if OK // -1 if Error or not empty position found
+ */
 int arcade_findById (Arcade list[], int listLen, int id, int* pFoundPosition)
 {
 	int index;
 	int status = -1;
 	if (list != NULL && listLen > 0)
 	{
-		*pFoundPosition = -1;
-		status = 1;
 		for (index = 0; index < listLen; index++)
 		{
 			if (list[index].isEmpty != 1)
@@ -135,6 +166,7 @@ int arcade_findById (Arcade list[], int listLen, int id, int* pFoundPosition)
 				if (list[index].id == id)
 				{
 					*pFoundPosition = index;
+					status = 1;
 					break;
 				}
 			}
@@ -143,6 +175,12 @@ int arcade_findById (Arcade list[], int listLen, int id, int* pFoundPosition)
 	return status;
 }
 
+/**
+ * \brief: Ask user the number of players of an specific Arcade struct
+ *
+ * \param pArcade: specific Arcade pointer
+ * \return 1 if OK // -1 if Error
+ */
 int arcade_modifyNumberOfPlayers (Arcade* pArcade)
 {
 	int status = -1;
@@ -159,6 +197,12 @@ int arcade_modifyNumberOfPlayers (Arcade* pArcade)
 	return status;
 }
 
+/**
+ * \brief: Ask user the game of an specific Arcade struct
+ *
+ * \param pArcade: specific Arcade pointer
+ * \return 1 if OK // -1 if Error
+ */
 int arcade_modifyGame (Arcade* pArcade)
 {
 	int status = -1;
@@ -175,6 +219,12 @@ int arcade_modifyGame (Arcade* pArcade)
 	return status;
 }
 
+/**
+ * \brief: Ask user the field of an Arcade to modify (option 1 or option 2)
+ *
+ * \param selectedField: int pointer to write chosen option
+ * \return 1 if OK // -1 if Error
+ */
 int selectFieldToModify (int* selectedField)
 {
 	int status = -1;
@@ -189,6 +239,12 @@ int selectFieldToModify (int* selectedField)
 	return status;
 }
 
+/**
+ * \brief: Print every not empty arcade of a given arcade array
+ *
+ * \param list: an array of Arcade structs
+ * \param listLen: length of Arcade array
+ */
 void arcade_printList(Arcade list[], int len)
 {
 	int index;
@@ -209,6 +265,14 @@ void arcade_printList(Arcade list[], int len)
 	}
 }
 
+/**
+ * \brief: Print every not empty arcade of a given arcade array with its playroom information
+ *
+ * \param arcadesList: an array of Arcade structs
+ * \param arcadeLen: length of Arcade array
+ * \param playroomsList: an array of Playroom structs
+ * \param roomLen: length of Playroom array
+ */
 void printArcadeWithRoomInfo (Arcade arcadesList[], int arcadeLen, Playroom playroomsList[], int roomLen)
 {
 	int index;
@@ -236,6 +300,13 @@ void printArcadeWithRoomInfo (Arcade arcadesList[], int arcadeLen, Playroom play
 	}
 }
 
+/**
+ * \brief: Delete all arcades of an specific playroom
+ *
+ * \param arcadesList: an array of Arcade structs
+ * \param arcadeListLen: length of Arcade array
+ * \param playroomId: ID of playroom
+ */
 void arcade_deleteByRoomId(Arcade arcadeList[], int arcadeListLen, int playroomId)
 {
 	int index;
@@ -249,6 +320,14 @@ void arcade_deleteByRoomId(Arcade arcadeList[], int arcadeListLen, int playroomI
 	}
 }
 
+/**
+ * \brief: Deleted an specific arcade of given arcades list
+ *
+ * \param list: an array of Arcade structs
+ * \param listLen: length of Arcade array
+ * \param id: ID of the arcade
+ * \return 1 if OK // -1 if Error
+ */
 int arcade_deleteById(Arcade list[], int listLen, int id)
 {
 	int status = -1;
@@ -262,6 +341,15 @@ int arcade_deleteById(Arcade list[], int listLen, int id)
 	return status;
 }
 
+/**
+ * \brief: Search by ID and return by reference the position (if exists) of an specific arcade in Arcade structs array
+ *
+ * \param arcadeList: an array of Arcade structs
+ * \param arcadeListLen: length of Arcade array
+ * \param arcadeId: ID of the arcade
+ * \param arcadeIndex: int pointer to write the position (if exists) of the arcade in Arcade structs array
+ * \return 1 if OK // -1 if Error or not empty position found
+ */
 int arcade_validateIfIdExists (Arcade arcadeList[], int arcadeListLen, int arcadeId, int* arcadeIndex)
 {
 	int status = -1;
@@ -282,6 +370,9 @@ int arcade_validateIfIdExists (Arcade arcadeList[], int arcadeListLen, int arcad
 	return status;
 }
 
+/**
+ * \brief: Print choose option to modify menu
+ */
 static void printItems (void)
 {
 	printf("\n---------------------");
@@ -290,6 +381,12 @@ static void printItems (void)
 	printf("\n---------------------");
 }
 
+/**
+ * \brief: Ask user the country of an specific Arcade struct
+ *
+ * \param arcadeCountry: char pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getArcadeCountry (char arcadeCountry[])
 {
 	int status = -1;
@@ -304,6 +401,13 @@ static int getArcadeCountry (char arcadeCountry[])
 	return status;
 }
 
+
+/**
+ * \brief: Ask user the game of an specific Arcade struct
+ *
+ * \param arcadeGame: char pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getArcadeGame (char arcadeGame[])
 {
 	int status = -1;
@@ -318,6 +422,12 @@ static int getArcadeGame (char arcadeGame[])
 	return status;
 }
 
+/**
+ * \brief: Ask user the biggest number of coins that an specific Arcade struct can hold
+ *
+ * \param pMaxCoins: int pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getArcadeMaxCoins (int* pMaxCoins)
 {
 	int status = -1;
@@ -332,6 +442,12 @@ static int getArcadeMaxCoins (int* pMaxCoins)
 	return status;
 }
 
+/**
+ * \brief: Ask user the biggest number of players that an specific Arcade struct can hold
+ *
+ * \param pPlayers: int pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getArcadeNumberOfPlayers (int* pPlayers)
 {
 	int status = -1;
@@ -346,6 +462,12 @@ static int getArcadeNumberOfPlayers (int* pPlayers)
 	return status;
 }
 
+/**
+ * \brief: Ask user the sound type of an specific Arcade struct
+ *
+ * \param pSoundType: int pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getArcadeSoundType (int* pSoundType)
 {
 	int status = -1;
@@ -360,6 +482,14 @@ static int getArcadeSoundType (int* pSoundType)
 	return status;
 }
 
+/**
+ * \brief: Ask user playroom ID of an specific Arcade struct
+ *
+ * \param pPlayroomId: int pointer to write user's input
+ * \param list: Playroom array
+ * \param len: length of Playroom array
+ * \return 1 if OK // -1 if Error
+ */
 static int getPlayroomId (int* pPlayroomId, Playroom list[], int len)
 {
 	int status = -1;
@@ -377,6 +507,14 @@ static int getPlayroomId (int* pPlayroomId, Playroom list[], int len)
 	return status;
 }
 
+/**
+ * \brief: Validate by ID if an specific playroom exists
+ *
+ * \param list: Playroom array
+ * \param len: length of Playroom array
+ * \param id: ID of Playroom
+ * \return 1 if exists // -1 if not exists
+ */
 int validateIfPlayroomIdExists (Playroom list[], int len, int id)
 {
 	int exists = -1;
@@ -393,6 +531,11 @@ int validateIfPlayroomIdExists (Playroom list[], int len, int id)
 	return exists;
 }
 
+/**
+ * \brief: Create an auto increment ID for arcades
+ *
+ * \return ID
+ */
 static int createId (void)
 {
 	static int idCounter = 0;

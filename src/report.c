@@ -12,17 +12,25 @@
 #include "Arcade.h"
 #include "Game.h"
 #include "Playroom.h"
+#include "report.h"
 
 #define PLAYROOM_NAME_LEN 64
 #define GAME_NAME_LEN 63
 
 //private prototypes
-int hasThisRoomOverFourArcades (Arcade arcadesList[], int arcadesListLen, int roomId);
-void getPlayroomNameById (Playroom playroomsList[], int playroomsListLen, int playroomId, char playroomName[]);
-int getNumberOfArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId);
-int getArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId);
-void getMaxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListLen);
+static int hasThisRoomOverFourArcades (Arcade arcadesList[], int arcadesListLen, int roomId);
+static int getArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId);
+static void getMaxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListLen);
 
+/**
+ * \brief: Report playrooms which have more than four arcades
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \return 1 if OK // -1 if Error
+ */
 int report_playroomsOverFourArcades (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen)
 {
 	int status = -1;
@@ -57,6 +65,15 @@ int report_playroomsOverFourArcades (Playroom playroomsList[], int playroomsList
 	return status;
 }
 
+/**
+ * \brief: Report arcades which are for more than two players
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \return 1 if OK // -1 if Error
+ */
 int report_arcadesOverTwoPlayers (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen)
 {
 	int status = -1;
@@ -91,6 +108,15 @@ int report_arcadesOverTwoPlayers (Playroom playroomsList[], int playroomsListLen
 	return status;
 }
 
+/**
+ * \brief: Report information about an specific playroom (if exists)
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \return 1 if OK // -1 if Error
+ */
 int report_playroomById (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int playroomId)
 {
 	int status = -1;
@@ -103,7 +129,7 @@ int report_playroomById (Playroom playroomsList[], int playroomsListLen, Arcade 
 		{
 			if (playroomsList[index].isEmpty != 1 && playroomsList[index].id == playroomId)
 			{
-				numberOfArcades = getNumberOfArcadesByPlayroomId(arcadesList, arcadesListLen, playroomId);
+				numberOfArcades = report_getNumberOfArcadesByPlayroomId(arcadesList, arcadesListLen, playroomId);
 				printf("\n--------------------------------");
 				printf("\nNOMBRE: %s", playroomsList[index].name);
 				printf("\nTIPO: %d", playroomsList[index].type);
@@ -117,6 +143,17 @@ int report_playroomById (Playroom playroomsList[], int playroomsListLen, Arcade 
 	return status;
 }
 
+/**
+ * \brief: Report every arcade of an specific playroom
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 int report_arcadesByPlayroomId (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int playroomId)
 {
 	int status = -1;
@@ -147,6 +184,17 @@ int report_arcadesByPlayroomId (Playroom playroomsList[], int playroomsListLen, 
 	return status;
 }
 
+/**
+ * \brief: Report the playroom which has the biggest number of arcades
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 int report_maxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen)
 {
 	int status = -1;
@@ -160,7 +208,7 @@ int report_maxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsLi
 			if (playroomsList[index].isEmpty != 1)
 			{
 				playroomId = playroomsList[index].id;
-				playroomsList[index].numberOfArcades = getNumberOfArcadesByPlayroomId(arcadesList, arcadesListLen, playroomId);
+				playroomsList[index].numberOfArcades = report_getNumberOfArcadesByPlayroomId(arcadesList, arcadesListLen, playroomId);
 			}
 		}
 		getMaxNumberOfArcadesPlayroom(playroomsList, playroomsListLen);
@@ -169,6 +217,17 @@ int report_maxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsLi
 	return status;
 }
 
+/**
+ * \brief: Report the maximum income possible of an specific playroom
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 int report_maxAmountOfPlayroom (Arcade arcadesList[], int arcadesListLen, int playroomId, float coinPrice)
 {
 	int status = -1;
@@ -194,6 +253,17 @@ int report_maxAmountOfPlayroom (Arcade arcadesList[], int arcadesListLen, int pl
 	return status;
 }
 
+/**
+ * \brief: Report how many arcades have an specific game
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 int report_howManyArcadesHasThisGame (Arcade arcadesList[], int arcadesListLen, char gameName[])
 {
 	int status = -1;
@@ -221,7 +291,13 @@ int report_howManyArcadesHasThisGame (Arcade arcadesList[], int arcadesListLen, 
 	return status;
 }
 
-void getMaxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListLen)
+/**
+ * \brief: Find and print the playroom which the biggest number of arcades
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ */
+static void getMaxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListLen)
 {
 	int index;
 	int biggerNumberOfArcades;
@@ -257,7 +333,15 @@ void getMaxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListL
 	printf("\nCANTIDAD DE ARCADES: %d", playroomsList[indexPlayroomBiggerNumberOfArcades].numberOfArcades);
 }
 
-int getArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId)
+/**
+ * \brief: Find and print every arcade of an specific playroom
+ *
+ * \param arcadesList: an arcades array
+ * \param arcadesListLen: length of arcades array
+ * \param playroomId: id of the specific playroom
+ * \return how many arcades has the playroom
+ */
+static int getArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId)
 {
 	int index;
 	int counter = 0;
@@ -279,7 +363,15 @@ int getArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playro
 	return counter;
 }
 
-int getNumberOfArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId)
+/**
+ * \brief: Find how many arcades has an specific playroom
+ *
+ * \param arcadesList: an arcades array
+ * \param arcadesListLen: length of arcades array
+ * \param playroomId: id of the specific playroom
+ * \return how many arcades has the playroom
+ */
+int report_getNumberOfArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId)
 {
 	int numberOfArcades = 0;
 	int index;
@@ -294,6 +386,14 @@ int getNumberOfArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, in
 	return numberOfArcades;
 }
 
+/**
+ * \brief: Find the playroom name from a playroom id
+ *
+ * \param playroomsList: an arcades array
+ * \param playroomsListLen: length of arcades array
+ * \param playroomId: id of the specific playroom
+ * \param playroomName: char pointer to write the name
+ */
 void getPlayroomNameById (Playroom playroomsList[], int playroomsListLen, int playroomId, char playroomName[])
 {
 	int index;
@@ -308,7 +408,15 @@ void getPlayroomNameById (Playroom playroomsList[], int playroomsListLen, int pl
 	}
 }
 
-int hasThisRoomOverFourArcades (Arcade arcadesList[], int arcadesListLen, int roomId)
+/**
+ * \brief: Check if an specific playroom has more than four arcades
+ *
+ * \param arcadesList: an arcades array
+ * \param arcadesListLen: length of arcades array
+ * \param playroomId: id of the specific playroom
+ * \return 1 if has more than four // -1 if not
+ */
+static int hasThisRoomOverFourArcades (Arcade arcadesList[], int arcadesListLen, int roomId)
 {
 	int hasMoreThanFourArcades = -1;
 	int counter = 0;

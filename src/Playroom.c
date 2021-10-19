@@ -23,6 +23,13 @@ static int createId (void);
 static void printItems (void);
 static int selectFieldToModify (int* selectedField);
 
+/**
+ * \brief: Put every playroom's isEmpty flag in 1
+
+ * \param list: a Playroom array
+ * \param len: length of the array
+ * \return 1 if OK // -1 if Error
+ */
 int playroom_init(Playroom list[], int len)
 {
 	int status = -1;
@@ -39,6 +46,13 @@ int playroom_init(Playroom list[], int len)
 	return status;
 }
 
+/**
+ * \brief: Ask user to fill all playroom struct fields.
+ * This function put flag is empty in -1 and write an id for the new playroom
+
+ * \param pArcade: a Playroom variable pointer
+ * \return 1 if OK // -1 if Error
+ */
 int playroom_add(Playroom* pPlayroom)
 {
 	int status = -1;
@@ -87,6 +101,14 @@ int playroom_add(Playroom* pPlayroom)
 	return status;
 }
 
+/**
+ * \brief: Search and return by reference first empty position (if exists) in Playroom structs array
+ *
+ * \param list: an array of Playroom structs
+ * \param listLen: length of Playroom array
+ * \param pEmptyPosition: int pointer to write the empty position
+ * \return 1 if OK // -1 if Error or not empty position found
+ */
 int playroom_findAnEmptyPosition(Playroom list[], int listLen, int* pEmptyPosition)
 {
 	int index;
@@ -106,6 +128,15 @@ int playroom_findAnEmptyPosition(Playroom list[], int listLen, int* pEmptyPositi
 	return status;
 }
 
+/**
+ * \brief: Search and return by reference the position (if exists) of an specific playroom in Playroom structs array
+ *
+ * \param list: an array of Playroom structs
+ * \param listLen: length of Playroom array
+ * \param id: ID of the playroom
+ * \param pFoundPosition: int pointer to write the position (if exists) of the arcade in Playroom structs array
+ * \return 1 if OK // -1 if Error or not empty position found
+ */
 int playroom_findById (Playroom list[], int listLen, int id, int* pFoundPosition)
 {
 	int index;
@@ -129,6 +160,12 @@ int playroom_findById (Playroom list[], int listLen, int id, int* pFoundPosition
 	return status;
 }
 
+/**
+ * \brief: Ask user which field wants to modify. Allow fields: name, address, type.
+
+ * \param pArcade: a Playroom variable pointer
+ * \return 1 if OK // -1 if Error
+ */
 int playroom_modify (Playroom* pPlayroom)
 {
 	int status = -1;
@@ -168,6 +205,14 @@ int playroom_modify (Playroom* pPlayroom)
 	return status;
 }
 
+/**
+ * \brief: Deleted an specific playroom of given playrooms list
+ *
+ * \param list: an array of Playroom structs
+ * \param listLen: length of Playroom array
+ * \param id: ID of the playroom
+ * \return 1 if OK // -1 if Error
+ */
 int playroom_deleteById(Playroom list[], int listLen, int id)
 {
 	int status = -1;
@@ -180,6 +225,12 @@ int playroom_deleteById(Playroom list[], int listLen, int id)
 	return status;
 }
 
+/**
+ * \brief: ASk user a playroom ID
+ *
+ * \param pId: int pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 int playroom_getId (int* pId)
 {
 	int status = -1;
@@ -193,6 +244,14 @@ int playroom_getId (int* pId)
 	return status;
 }
 
+/**
+ * \brief: Print every active playrooms in playrooms array. If printType == 1, function will print playroom type too.
+ *
+ * \param list: an array of Playroom structs
+ * \param len: length of Playroom array
+ * \param printType: 1 if wants to print playroom type
+ * \return 1 if OK // -1 if Error
+ */
 void playroom_printList(Playroom list[], int len, int printType)
 {
 	int index;
@@ -213,6 +272,12 @@ void playroom_printList(Playroom list[], int len, int printType)
 	}
 }
 
+/**
+ * \brief: Ask user the field of a Playroom to modify (option 1, option 2 or option 3)
+ *
+ * \param selectedField: int pointer to write chosen option
+ * \return 1 if OK // -1 if Error
+ */
 static int selectFieldToModify (int* selectedField)
 {
 	int status = -1;
@@ -227,6 +292,9 @@ static int selectFieldToModify (int* selectedField)
 	return status;
 }
 
+/**
+ * \brief: Print choose option to modify menu
+ */
 static void printItems (void)
 {
 	printf("\n---------------------");
@@ -236,6 +304,12 @@ static void printItems (void)
 	printf("\n---------------------");
 }
 
+/**
+ * \brief: Ask user the name of a Playroom
+ *
+ * \param playroomName: char pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getPlayroomName (char playroomName[])
 {
 	int status = -1;
@@ -250,6 +324,12 @@ static int getPlayroomName (char playroomName[])
 	return status;
 }
 
+/**
+ * \brief: Ask user the address of a Playroom
+ *
+ * \param playroomAddress: char pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getPlayroomAddress (char playroomAddress[])
 {
 	int status = -1;
@@ -264,6 +344,12 @@ static int getPlayroomAddress (char playroomAddress[])
 	return status;
 }
 
+/**
+ * \brief: Ask user the type of a Playroom
+ *
+ * \param pType: int pointer to write user's input
+ * \return 1 if OK // -1 if Error
+ */
 static int getPlayroomType (int* pType)
 {
 	int status = -1;
@@ -278,6 +364,11 @@ static int getPlayroomType (int* pType)
 	return status;
 }
 
+/**
+ * \brief: Create an auto increment ID for arcades
+ *
+ * \return ID
+ */
 static int createId (void)
 {
 	static int idCounter = 0;

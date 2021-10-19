@@ -27,6 +27,9 @@ static void menu_subOption5 (Playroom playroomsList[], int playroomsListLen, Arc
 static void menu_subOption6 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
 static void menu_subOption7 (Arcade arcadesList[], int arcadesListLen, int numberOfArcades);
 
+/**
+ * \brief: Print software main menu
+ */
 void menu_printMainMenu (void)
 {
 	printf("\n");
@@ -44,6 +47,14 @@ void menu_printMainMenu (void)
 	printf("\n--------------------");
 }
 
+/**
+ * \brief: Ask user to select an integer option within a given range
+ *
+ * \param selectedOption: int pointer to write user's input
+ * \param minValue: minimum allowed value
+ * \param maxValue: maximum allowed value
+ * \return 1 if OK // -1 if Error
+ */
 int menu_selectAnOption (int* selectedOption, int minValue, int maxValue)
 {
 	int status = -1;
@@ -57,6 +68,13 @@ int menu_selectAnOption (int* selectedOption, int minValue, int maxValue)
 	return status;
 }
 
+/**
+ * \brief: Find an empty position in a given playrooms array and ask user to fill all playroom struct fields.
+ *
+ * \param playroomList: a playrooms array
+ * \param listLen: length of playrooms array
+ * \return 1 if OK // -1 if Error
+ */
 int menu_optionOne (Playroom playroomList[], int listLen)
 {
 	int status = -1;
@@ -75,20 +93,34 @@ int menu_optionOne (Playroom playroomList[], int listLen)
 	return status;
 }
 
-int menu_optionTwo (Playroom playroomList[], int playroomListLen, Arcade arcadeList[], int arcadeListLen, int playroomsQuantity)
+/**
+ * \brief: Print a list of active playrooms and ask user to enter an ID
+ * 			Find the playroom with the given ID (if exists) and delete it
+ *
+ * \param playroomList: a playrooms array
+ * \param playroomListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
+int menu_optionTwo (Playroom playroomList[], int playroomListLen, Arcade arcadeList[], int arcadeListLen, int numberOfPlayrooms, int* arcadesToDelete)
 {
 	int status = -1;
 	int id;
+	int numberOfArcadesToDelete;
 
 	if (playroomList != NULL && playroomListLen > 0)
 	{
-		if (playroomsQuantity > 0)
+		if (numberOfPlayrooms > 0)
 		{
 			playroom_printList(playroomList, playroomListLen, 0);
 			if (playroom_getId(&id) == 1)
 			{
+				numberOfArcadesToDelete = report_getNumberOfArcadesByPlayroomId(arcadeList, arcadeListLen, id);
 				if (playroom_deleteById(playroomList, playroomListLen, id) == 1)
 				{
+					*arcadesToDelete = numberOfArcadesToDelete;
 					arcade_deleteByRoomId(arcadeList, arcadeListLen, id);
 					status = 1;
 				}
@@ -102,11 +134,18 @@ int menu_optionTwo (Playroom playroomList[], int playroomListLen, Arcade arcadeL
 	return status;
 }
 
-void menu_optionThree (Playroom playroomList[], int playroomListLen, int playroomsQuantity)
+/**
+ * \brief: Print a list of active playrooms
+ *
+ * \param playroomList: a playrooms array
+ * \param playroomListLen: length of playrooms array
+ * \param numberOfPlayrooms: number of active playrooms
+ */
+void menu_optionThree (Playroom playroomList[], int playroomListLen, int numberOfPlayrooms)
 {
 	if (playroomList != NULL && playroomListLen > 0)
 	{
-		if (playroomsQuantity > 0)
+		if (numberOfPlayrooms > 0)
 		{
 			playroom_printList(playroomList, playroomListLen, 1);
 		}
@@ -115,14 +154,24 @@ void menu_optionThree (Playroom playroomList[], int playroomListLen, int playroo
 	}
 }
 
-int menu_optionFour (Arcade arcadeList[], int arcadeListLen, Playroom playroomList[], int playroomListLen, int playroomsQuantity)
+/**
+ * \brief: Find an empty position in a given arcades array and ask user to fill all arcade struct fields.
+ *
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param playroomList: a playrooms array
+ * \param playroomListLen: length of playrooms array
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
+int menu_optionFour (Arcade arcadeList[], int arcadeListLen, Playroom playroomList[], int playroomListLen, int numberOfPlayrooms)
 {
 	int status = -1;
 	int emptyPosition;
 
 	if (arcadeList != NULL && arcadeListLen > 0)
 	{
-		if (playroomsQuantity > 0)
+		if (numberOfPlayrooms > 0)
 		{
 			if (arcade_findAnEmptyPosition(arcadeList, arcadeListLen, &emptyPosition) == 1)
 			{
@@ -138,7 +187,15 @@ int menu_optionFour (Arcade arcadeList[], int arcadeListLen, Playroom playroomLi
 	return status;
 }
 
-void menu_optionFive (Arcade arcadeList[], int arcadeListLen, int arcadesQuantity)
+/**
+ * \brief: Allow user to modify number of players or game name of an specific arcade
+ *
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \return 1 if OK // -1 if Error
+ */
+void menu_optionFive (Arcade arcadeList[], int arcadeListLen, int numberOfArcades)
 {
 	int selectedOption;
 	int id;
@@ -148,7 +205,7 @@ void menu_optionFive (Arcade arcadeList[], int arcadeListLen, int arcadesQuantit
 
 	if (arcadeList != NULL && arcadeListLen > 0)
 	{
-		if (arcadesQuantity > 0)
+		if (numberOfArcades > 0)
 		{
 			arcade_printList(arcadeList, arcadeListLen);
 			if (input_getInt(1, 9999, 2, "\n->Ingrese el id del arcade que desea modificar", &id, "Error") == 1)
@@ -166,7 +223,6 @@ void menu_optionFive (Arcade arcadeList[], int arcadeListLen, int arcadesQuantit
 						{
 							if (game_getList(arcadeList, arcadeListLen, gameList) == 1)
 							{
-								printf("\nENtre");
 								game_printList(gameList, gameListLen);
 								arcade_modifyGame(&arcadeList[arcadeIndex]);
 							}
@@ -182,7 +238,18 @@ void menu_optionFive (Arcade arcadeList[], int arcadeListLen, int arcadesQuantit
 	}
 }
 
-int menu_optionSix (Arcade arcadeList[], int arcadeListLen, Playroom playroomList[], int playroomListLen, int arcadesQuantity)
+/**
+ * \brief: Print a list of active arcades and ask user to enter an ID
+ * 			Find the arcade with the given ID (if exists) and delete it
+ *
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param playroomList: a playrooms array
+ * \param playroomListLen: length of playrooms array
+ * \param numberOfArcades: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
+int menu_optionSix (Arcade arcadeList[], int arcadeListLen, Playroom playroomList[], int playroomListLen, int numberOfArcades)
 {
 	int status = -1;
 	int id;
@@ -191,7 +258,7 @@ int menu_optionSix (Arcade arcadeList[], int arcadeListLen, Playroom playroomLis
 
 	if (arcadeList != NULL && arcadeListLen > 0 && playroomList != NULL && playroomListLen > 0)
 	{
-		if (arcadesQuantity > 0)
+		if (numberOfArcades > 0)
 		{
 			printArcadeWithRoomInfo(arcadeList, arcadeListLen, playroomList, playroomListLen);
 			if (input_getInt(1, 9999, 2, "\n->Ingrese el id del arcade que desea eliminar", &id, "Error") == 1)
@@ -226,11 +293,18 @@ int menu_optionSix (Arcade arcadeList[], int arcadeListLen, Playroom playroomLis
 	return status;
 }
 
-void menu_optionSeven (Arcade arcadeList[], int arcadeListLen, int arcadesQuantity)
+/**
+ * \brief: Print a list of active arcades
+ *
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ */
+void menu_optionSeven (Arcade arcadeList[], int arcadeListLen, int numberOfArcades)
 {
 	if (arcadeList != NULL && arcadeListLen > 0)
 	{
-		if (arcadesQuantity > 0)
+		if (numberOfArcades > 0)
 		{
 			arcade_printList(arcadeList, arcadeListLen);
 		}
@@ -239,14 +313,21 @@ void menu_optionSeven (Arcade arcadeList[], int arcadeListLen, int arcadesQuanti
 	}
 }
 
-void menu_optionEight (Arcade arcadeList[], int arcadeListLen, int arcadesQuantity)
+/**
+ * \brief: Print an unrepetead list of games
+ *
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ */
+void menu_optionEight (Arcade arcadeList[], int arcadeListLen, int numberOfArcades)
 {
 	int gameListLen = arcadeListLen;
 	Game gameList[gameListLen];
 
 	if (arcadeList != NULL && arcadeListLen > 0)
 	{
-		if (arcadesQuantity > 0)
+		if (numberOfArcades > 0)
 		{
 			if (game_getList(arcadeList, arcadeListLen, gameList) == 1)
 			{
@@ -258,6 +339,17 @@ void menu_optionEight (Arcade arcadeList[], int arcadeListLen, int arcadesQuanti
 	}
 }
 
+/**
+ * \brief: Ask user to select a report
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 int menu_optionNine (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
 {
 	int selectedOption;
@@ -293,6 +385,17 @@ int menu_optionNine (Playroom playroomsList[], int playroomsListLen, Arcade arca
 	return 0;
 }
 
+/**
+ * \brief: Report playrooms which have more than four arcades
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static int menu_subOption1 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
 {
 	if (numberOfPlayrooms > 0 && numberOfArcades > 3)
@@ -309,6 +412,17 @@ static int menu_subOption1 (Playroom playroomsList[], int playroomsListLen, Arca
 	return 1;
 }
 
+/**
+ * \brief: Report arcades which are for more than two players
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static void menu_subOption2 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades)
 {
 	if (numberOfArcades > 0)
@@ -322,12 +436,24 @@ static void menu_subOption2 (Playroom playroomsList[], int playroomsListLen, Arc
 		printf("\nDebe existir al menos un arcade para realizar el informe");
 }
 
+/**
+ * \brief: Report information about an specific playroom
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static void menu_subOption3 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfPlayrooms)
 {
 	int id;
 
 	if (numberOfPlayrooms > 0)
 	{
+		playroom_printList(playroomsList, playroomsListLen, 1);
 		if (playroom_getId(&id) == 1)
 		{
 			if (validateIfPlayroomIdExists(playroomsList, playroomsListLen, id) == 1)
@@ -347,12 +473,24 @@ static void menu_subOption3 (Playroom playroomsList[], int playroomsListLen, Arc
 		printf("\nDebe existir al menos un salon para realizar el informe");
 }
 
+/**
+ * \brief: Report every arcade of an specific playroom
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static void menu_subOption4 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
 {
 	int id;
 
 	if (numberOfPlayrooms > 0 && numberOfArcades > 0)
 	{
+		playroom_printList(playroomsList, playroomsListLen, 1);
 		if (playroom_getId(&id) == 1)
 		{
 			if (validateIfPlayroomIdExists(playroomsList, playroomsListLen, id) == 1)
@@ -372,6 +510,17 @@ static void menu_subOption4 (Playroom playroomsList[], int playroomsListLen, Arc
 		printf("\nNo hay suficientes salones o arcades para realizar el informe");
 }
 
+/**
+ * \brief: Report the playroom which has the biggest number of arcades
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static void menu_subOption5 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
 {
 	if (numberOfPlayrooms > 0 && numberOfArcades > 0)
@@ -385,6 +534,17 @@ static void menu_subOption5 (Playroom playroomsList[], int playroomsListLen, Arc
 		printf("\nNo hay suficientes salones o arcades para realizar el informe");
 }
 
+/**
+ * \brief: Report the maximum income possible of an specific playroom
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static void menu_subOption6 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
 {
 	int id;
@@ -416,6 +576,17 @@ static void menu_subOption6 (Playroom playroomsList[], int playroomsListLen, Arc
 		printf("\nNo hay suficientes salones o arcades para realizar el informe");
 }
 
+/**
+ * \brief: Report how many arcades have an specific game
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \param numberOfArcades: number of active arcades
+ * \param numberOfPlayrooms: number of active playrooms
+ * \return 1 if OK // -1 if Error
+ */
 static void menu_subOption7 (Arcade arcadesList[], int arcadesListLen, int numberOfArcades)
 {
 	char gameName[GAME_NAME_LEN];

@@ -18,6 +18,14 @@
 static int isThisGameInList (char gameName[], Game gameList[], int listLen);
 static void initGameList (Game gameList[], int listLen);
 
+/**
+ * \brief: Get a list of unrepeated games that appears in an arcades list
+ *
+ * \param arcadeList: arcades array
+ * \param listLen: length of arcades array
+ * \param gameList: char pointer to write the list of games
+ * \return 1 if OK // -1 if Error
+ */
 int game_getList (Arcade arcadeList[], int listLen, Game gameList[])
 {
 	int status = -1;
@@ -44,6 +52,13 @@ int game_getList (Arcade arcadeList[], int listLen, Game gameList[])
 	return status;
 }
 
+/**
+ * \brief: Print every active game in games list
+ *
+ * \param gameList: games array
+ * \param listLen: length of games array
+ * \return 1 if OK // -1 if Error
+ */
 int game_printList (Game gameList[], int listLen)
 {
 	int status = -1;
@@ -69,6 +84,13 @@ int game_printList (Game gameList[], int listLen)
 	return status;
 }
 
+/**
+ * \brief: Put every game's isEmpty flag in 1
+
+ * \param gameList: a Game array
+ * \param listLen: length of the array
+ * \return 1 if OK // -1 if Error
+ */
 static void initGameList (Game gameList[], int listLen)
 {
 	int index;
@@ -79,6 +101,14 @@ static void initGameList (Game gameList[], int listLen)
 	}
 }
 
+/**
+ * \brief: Check if a given game exists in a given games lists
+
+ * \param gameName: name of the game to search by
+ * \param gameList: a Game array
+ * \param listLen: length of the array
+ * \return 1 if exists // -1 if not exists
+ */
 static int isThisGameInList (char gameName[], Game gameList[], int listLen)
 {
 	int wasFound = -1;

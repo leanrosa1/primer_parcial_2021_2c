@@ -26,6 +26,7 @@ int main(void) {
 	int selectedOption;
 	int numberOfPlayrooms = 0;
 	int numberOfArcades = 0;
+	int arcadesToDelete;
 
 	playroom_init(playroomsList, PLAYROOMS_LEN);
 	arcade_init(arcadesList, ARCADES_LEN);
@@ -42,9 +43,10 @@ int main(void) {
 						numberOfPlayrooms++;
 					break;
 				case 2:
-					if (menu_optionTwo(playroomsList, PLAYROOMS_LEN, arcadesList, ARCADES_LEN, numberOfPlayrooms) == 1)
+					if (menu_optionTwo(playroomsList, PLAYROOMS_LEN, arcadesList, ARCADES_LEN, numberOfPlayrooms, &arcadesToDelete) == 1)
 					{
 						numberOfPlayrooms--;
+						numberOfArcades = numberOfArcades - arcadesToDelete;
 						printf("\nSalón eliminado correctamente");
 					}
 					break;
