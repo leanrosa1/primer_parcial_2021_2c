@@ -48,6 +48,42 @@ int arcade_init(Arcade list[], int len)
 	return status;
 }
 
+void arcade_forceAdd (Arcade* pArcade)
+{
+	pArcade->id = createId();
+	strncpy(pArcade->country, "Argentina", COUNTRY_AND_GAME_LEN);
+	strncpy(pArcade->game, "Pinball", COUNTRY_AND_GAME_LEN);
+	pArcade->maxNumberOfCoins = 15;
+	pArcade->numberOfPlayers = 3;
+	pArcade->soundType = 2;
+	pArcade->idPlayroom = 1;
+	pArcade->isEmpty = -1;
+}
+
+void arcade_forceAdd2 (Arcade* pArcade)
+{
+	pArcade->id = createId();
+	strncpy(pArcade->country, "Paraguay", COUNTRY_AND_GAME_LEN);
+	strncpy(pArcade->game, "Street fighter", COUNTRY_AND_GAME_LEN);
+	pArcade->maxNumberOfCoins = 5;
+	pArcade->numberOfPlayers = 1;
+	pArcade->soundType = 2;
+	pArcade->idPlayroom = 3;
+	pArcade->isEmpty = -1;
+}
+
+void arcade_forceAdd3 (Arcade* pArcade)
+{
+	pArcade->id = createId();
+	strncpy(pArcade->country, "Colombia", COUNTRY_AND_GAME_LEN);
+	strncpy(pArcade->game, "Pablo Emilio", COUNTRY_AND_GAME_LEN);
+	pArcade->maxNumberOfCoins = 2;
+	pArcade->numberOfPlayers = 3;
+	pArcade->soundType = 2;
+	pArcade->idPlayroom = 5;
+	pArcade->isEmpty = -1;
+}
+
 /**
  * \brief: Ask user to fill all arcade struct fields.
  * This function put flag is empty in -1 and write an id for the new arcade

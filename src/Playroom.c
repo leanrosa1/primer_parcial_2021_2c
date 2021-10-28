@@ -46,6 +46,15 @@ int playroom_init(Playroom list[], int len)
 	return status;
 }
 
+void playroom_forceAdd (Playroom* pPlayroom)
+{
+	pPlayroom->id = createId();
+	strncpy(pPlayroom->name, "Salon", NAME_AND_ADDRESS_LEN);
+	strncpy(pPlayroom->address, "Mitre 5469", NAME_AND_ADDRESS_LEN);
+	pPlayroom->type = 1;
+	pPlayroom->isEmpty = -1;
+}
+
 /**
  * \brief: Ask user to fill all playroom struct fields.
  * This function put flag is empty in -1 and write an id for the new playroom

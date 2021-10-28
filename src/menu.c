@@ -26,6 +26,8 @@ static void menu_subOption4 (Playroom playroomsList[], int playroomsListLen, Arc
 static void menu_subOption5 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
 static void menu_subOption6 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
 static void menu_subOption7 (Arcade arcadesList[], int arcadesListLen, int numberOfArcades);
+static void menu_subOption8 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
+static void menu_subOption9 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms);
 
 /**
  * \brief: Print software main menu
@@ -355,7 +357,7 @@ int menu_optionNine (Playroom playroomsList[], int playroomsListLen, Arcade arca
 	int selectedOption;
 
 	printReportsMenu();
-	if (menu_selectAnOption(&selectedOption, 1, 7) == 1)
+	if (menu_selectAnOption(&selectedOption, 1, 9) == 1)
 	{
 		switch (selectedOption)
 		{
@@ -379,6 +381,12 @@ int menu_optionNine (Playroom playroomsList[], int playroomsListLen, Arcade arca
 				break;
 			case 7:
 				menu_subOption7(arcadesList, arcadesListLen, numberOfArcades);
+				break;
+			case 8:
+				menu_subOption8(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades, numberOfPlayrooms);
+				break;
+			case 9:
+				menu_subOption9(playroomsList, playroomsListLen, arcadesList, arcadesListLen, numberOfArcades, numberOfPlayrooms);
 				break;
 		}
 	}
@@ -607,6 +615,34 @@ static void menu_subOption7 (Arcade arcadesList[], int arcadesListLen, int numbe
 		printf("\nDebe existir al menos un arcade registrado para realizar el informe");
 }
 
+static void menu_subOption8 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	if (numberOfArcades > 7 && numberOfPlayrooms > 0)
+	{
+		if (report_completeRooms(playroomsList, playroomsListLen, arcadesList, arcadesListLen) != 1)
+		{
+			printf("\nNo hay salones equipados por completo");
+		}
+	}
+	else
+		printf("\nDeben existir al menos ocho arcades y un salon para realizar el informe");
+}
+
+static void menu_subOption9 (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, int numberOfArcades, int numberOfPlayrooms)
+{
+	float average;
+
+	if (numberOfArcades > 0 && numberOfPlayrooms > 0)
+	{
+		if (report_arcadesPerPlayroomAverage(playroomsList, playroomsListLen, arcadesList, arcadesListLen, &average) == 1)
+		{
+			printf("\nEl promedio de arcades por salon es de %f", average);
+		}
+	}
+	else
+		printf("\nDeben existir al menos un salon y un arcade para realizar el informe");
+}
+
 static void printReportsMenu (void)
 {
 	printf("\n---------------------INFORMAR---------------------");
@@ -617,6 +653,8 @@ static void printReportsMenu (void)
 	printf("\n5. Salon con mayor cantidad de arcades");
 	printf("\n6. Mayor recaudación posible de un salon");
 	printf("\n7. Arcades que contienen un juego determinado");
+	printf("\n8. Salones completos");
+	printf("\n9. Promedio de arcades por salon");
 	printf("\n--------------------------------------------------");
 }
 

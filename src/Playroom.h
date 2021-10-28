@@ -25,4 +25,6 @@ int playroom_modify (Playroom* pPlayroom);
 int playroom_deleteById(Playroom list[], int listLen, int id);
 void playroom_printList(Playroom list[], int len, int printType);
 int playroom_getId (int* pId);
+
+void playroom_forceAdd (Playroom* pPlayroom);
 #endif /* PLAYROOM_H_ */

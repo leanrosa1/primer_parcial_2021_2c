@@ -31,6 +31,26 @@ int main(void) {
 	playroom_init(playroomsList, PLAYROOMS_LEN);
 	arcade_init(arcadesList, ARCADES_LEN);
 
+	//forced adds [IGNORE]
+	for (int i = 0; i < 6; i++)
+	{
+		playroom_forceAdd(&playroomsList[i]);
+		numberOfPlayrooms++;
+	}
+
+	for (int k = 0; k < 9; k++)
+	{
+		arcade_forceAdd(&arcadesList[k]);
+		numberOfArcades++;
+	}
+	arcade_forceAdd2(&arcadesList[9]);
+	arcade_forceAdd2(&arcadesList[10]);
+	arcade_forceAdd3(&arcadesList[11]);
+	arcade_forceAdd3(&arcadesList[12]);
+	numberOfArcades += 4;
+
+	//end of forced adds
+
 	do
 	{
 		menu_printMainMenu();

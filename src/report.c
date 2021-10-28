@@ -21,6 +21,7 @@
 static int hasThisRoomOverFourArcades (Arcade arcadesList[], int arcadesListLen, int roomId);
 static int getArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId);
 static void getMaxNumberOfArcadesPlayroom (Playroom playroomsList[], int playroomsListLen);
+static int hasMoreThanEighArcadesOverTwoPlayers (int playroomId, Arcade arcadesList[], int arcadesListLen);
 
 /**
  * \brief: Report playrooms which have more than four arcades
@@ -259,9 +260,6 @@ int report_maxAmountOfPlayroom (Arcade arcadesList[], int arcadesListLen, int pl
  * \param playroomsList: a playrooms array
  * \param playroomsListLen: length of playrooms array
  * \param arcadeList: an arcades array
- * \param arcadeListLen: length of arcades array
- * \param numberOfArcades: number of active arcades
- * \param numberOfPlayrooms: number of active playrooms
  * \return 1 if OK // -1 if Error
  */
 int report_howManyArcadesHasThisGame (Arcade arcadesList[], int arcadesListLen, char gameName[])
@@ -289,6 +287,103 @@ int report_howManyArcadesHasThisGame (Arcade arcadesList[], int arcadesListLen, 
 	}
 
 	return status;
+}
+
+/**
+ * \brief: Report playrooms which have at least eight arcades for over two players
+ *
+ * \param playroomsList: a playrooms array
+ * \param playroomsListLen: length of playrooms array
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \return 1 if OK // -1 if Error
+ */
+int report_completeRooms (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen)
+{
+	int status = -1;
+	int index;
+	int playroomId;
+
+	if (playroomsList != NULL && arcadesList != NULL && playroomsListLen > 0 && arcadesListLen > 0)
+	{
+		for (index = 0; index < playroomsListLen; index++)
+		{
+			if (playroomsList[index].isEmpty != 1)
+			{
+				playroomId = playroomsList[index].id;
+				if (hasMoreThanEighArcadesOverTwoPlayers(playroomId, arcadesList, arcadesListLen) == 1)
+				{
+					printf("\n---------------------------------------");
+					printf("\nSALON COMPLETO:");
+					printf("\nID: %d", playroomsList[index].id);
+					printf("\nNOMBRE: %s", playroomsList[index].name);
+					printf("\nDIRECCION: %s", playroomsList[index].address);
+					printf("\nTIPO: %d", playroomsList[index].type);
+					status = 1;
+				}
+			}
+		}
+	}
+	return status;
+}
+
+int report_arcadesPerPlayroomAverage (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, float* average)
+{
+	int status = -1;
+	int index;
+	int playroomId;
+	int playroomArcades;
+	int arcadesAcumulator = 0;
+	int playroomsCounter = 0;
+
+	for (index = 0; index < playroomsListLen; index++)
+	{
+		if (playroomsList[index].isEmpty != 1)
+		{
+			playroomId = playroomsList[index].id;
+			playroomArcades = report_getNumberOfArcadesByPlayroomId(arcadesList, arcadesListLen, playroomId);
+			arcadesAcumulator += playroomArcades;
+			playroomsCounter++;
+		}
+	}
+
+	if (playroomsCounter > 0 && arcadesAcumulator > 0)
+	{
+		*average = arcadesAcumulator / playroomsCounter;
+		status = 1;
+	}
+	return status;
+}
+
+/**
+ * \brief: Validate if a playroom has at least eight arcades for over two players
+ *
+ * \param playroomId: playroom id
+ * \param arcadeList: an arcades array
+ * \param arcadeListLen: length of arcades array
+ * \return 1 if meets the condition // -1 if not
+ */
+static int hasMoreThanEighArcadesOverTwoPlayers (int playroomId, Arcade arcadesList[], int arcadesListLen)
+{
+	int meetsCondition = -1;
+	int index;
+	int counter = 0;
+
+	for (index = 0; index < arcadesListLen; index++)
+	{
+		if (arcadesList[index].isEmpty != 1 &&
+				arcadesList[index].idPlayroom == playroomId &&
+				arcadesList[index].numberOfPlayers > 2)
+		{
+			counter++;
+		}
+	}
+
+	if (counter > 7)
+	{
+		meetsCondition = 1;
+	}
+	return meetsCondition;
 }
 
 /**

@@ -33,4 +33,8 @@ void arcade_printList(Arcade list[], int len);
 void arcade_deleteByRoomId(Arcade arcadeList[], int arcadeListLen, int playroomId);
 int arcade_validateIfIdExists (Arcade arcadeList[], int arcadeListLen, int arcadeId, int* arcadeIndex);
 int validateIfPlayroomIdExists (Playroom list[], int len, int id);
+
+void arcade_forceAdd (Arcade* pArcade);
+void arcade_forceAdd2 (Arcade* pArcade);
+void arcade_forceAdd3 (Arcade* pArcade);
 #endif /* ARCADE_H_ */

@@ -16,4 +16,6 @@ int report_maxAmountOfPlayroom (Arcade arcadesList[], int arcadesListLen, int pl
 int report_howManyArcadesHasThisGame (Arcade arcadesList[], int arcadesListLen, char gameName[]);
 int report_getNumberOfArcadesByPlayroomId (Arcade arcadesList[], int arcadesListLen, int playroomId);
 void getPlayroomNameById (Playroom playroomsList[], int playroomsListLen, int playroomId, char playroomName[]);
+int report_completeRooms (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen);
+int report_arcadesPerPlayroomAverage (Playroom playroomsList[], int playroomsListLen, Arcade arcadesList[], int arcadesListLen, float* average);
 #endif /* REPORT_H_ */
